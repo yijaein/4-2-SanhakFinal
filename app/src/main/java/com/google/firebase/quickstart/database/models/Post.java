@@ -1,5 +1,7 @@
 package com.google.firebase.quickstart.database.models;
 
+import android.net.Uri;
+
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
