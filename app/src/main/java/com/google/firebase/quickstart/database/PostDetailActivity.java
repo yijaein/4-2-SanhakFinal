@@ -55,6 +55,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     2017_09_28 이재인 맵뷰 추가
     2017_09_28 이재인 맵 프래그먼트 추가 디비에서 직접 좌표값을 불러와야함
     2017_10_01 이재인 글에 있는 좌표값을 불러와서 지도에 띄우기는 성공했으나 바로바로 뜨지는 않는다  -> 나중에 수정
+    2017_10_11 이재인 글을 등록 시 좌표값과 사진을 저장해서 띄우기 성공 -> 글을 등록하면 바로 볼 수 있도록 수정
  */
     private static final String TAG = "PostDetailActivity";
 
@@ -84,11 +85,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     public static double dLat =0;
     public static double dLon =0;
 
-
     private StorageReference mStorageRef;
-    /*
-
-     */
     String downloadUri;//이미지 저장경로
 /*
         2017_10_11 이재인 이미지 다운로드 추가
@@ -225,6 +222,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
 
         /*
         2017_10_02 이재인 시작시 사진을 받아옴
+        2017_10_11 이재인 사진 받아오기 완료 피카소 이용
          */
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();

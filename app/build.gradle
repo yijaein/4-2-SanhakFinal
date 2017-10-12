@@ -12,6 +12,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -40,6 +41,10 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:11.2.0'
     compile 'com.google.firebase:firebase-storage:11.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
+
+    compile 'com.google.firebase:firebase-messaging:11.2.0'
+    compile 'com.firebase:firebase-jobdispatcher:0.6.0'
+    compile 'com.google.firebase:firebase-core:11.2.0'
 
 
     testCompile 'junit:junit:4.12'

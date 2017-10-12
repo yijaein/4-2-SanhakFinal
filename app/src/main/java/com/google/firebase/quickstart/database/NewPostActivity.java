@@ -184,6 +184,8 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+
+
         LatLng SEOUL = new LatLng(lat, lon);
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(SEOUL);

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="안녕하십니까"
+        android:id="@+id/hello"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/hello"
+        android:layout_marginTop="20dp"
+        android:text="현재 잃어버린 물건 위치 전부"
+        android:id="@+id/txtinfo"/>
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/AllMap"
+        android:layout_below="@+id/txtinfo"
+        >
+
+    </fragment>
+
+
+
+
+
+
+
+
+
+</RelativeLayout>

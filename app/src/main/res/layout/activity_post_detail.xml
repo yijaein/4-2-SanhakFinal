@@ -29,7 +29,7 @@
 
     <fragment
         android:layout_width="match_parent"
-        android:layout_height="170dp"
+        android:layout_height="100dp"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:id="@+id/mapfrag2"
         android:layout_below="@+id/post_text_layout"
@@ -38,7 +38,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="170dp"
+        android:layout_height="100dp"
         android:id="@+id/postdetailImgView"
         android:layout_below="@+id/mapfrag2"
         />
