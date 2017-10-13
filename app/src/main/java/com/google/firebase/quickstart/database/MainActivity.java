@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.quickstart.database.Notification.MyFirebaseMessagingService;
 import com.google.firebase.quickstart.database.fragment.MyPostsFragment;
 import com.google.firebase.quickstart.database.fragment.MyTopPostsFragment;
 import com.google.firebase.quickstart.database.fragment.MyInformation;
@@ -125,5 +126,6 @@ public class  MainActivity extends BaseActivity {
         }
 
     }
+
 
 }

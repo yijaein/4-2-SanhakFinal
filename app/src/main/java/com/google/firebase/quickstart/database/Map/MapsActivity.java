@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -42,12 +43,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 /*  지도를 띄우고 자기 위치를 찾은 후 마커로 찍고 좌표값을 DB에 저장한다.
      2017_09_19 이재인 MapActivity 추가
      2017_09_19 이재인 ThirdFragment 에서 위치 정보값을 받아와서 DB에 저장완료함
+     2017_10_13 내 위치 좌표값 얻기
 
  */
     private Button searchBtn;
 //    private EditText searchEdit;
-    LocationManager locationManager;
-    private  String provider;
     private  static  final  int LOCATION_PERMISSION_REQUEST_CODE=1;
     private  boolean mPermissionDenied = false;
     public static double lon;
@@ -55,6 +55,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     String TAG = getClass().getSimpleName();
     private static final int LAUNCHED_ACTIVITY =1;
+
 
 
 

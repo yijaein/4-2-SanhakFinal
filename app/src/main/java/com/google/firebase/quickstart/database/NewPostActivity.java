@@ -2,6 +2,8 @@ package com.google.firebase.quickstart.database;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +20,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -143,6 +147,7 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
             public void onClick(View v) {
                 submitPost();
 
+
             }
         });
 
@@ -256,6 +261,8 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
                     }
                 });
         // [END single_value_read]
+        sendNotification(body);
+
     }
 
     private void setEditingEnabled(boolean enabled) {
@@ -400,5 +407,25 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
 
 
         }
+    }
+
+    private void sendNotification(String body){
+        Intent intent = new Intent(this,MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0 /* 리퀘스트 코드*/,intent,PendingIntent.FLAG_ONE_SHOT);
+
+        Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notifiBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("새로운 글이 등록됬어요")
+                .setContentText(body)
+                .setAutoCancel(true)
+                .setSound(notificationSound)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(0,/*ID of notification */notifiBuilder.build());
+
     }
 }
