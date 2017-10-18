@@ -2,8 +2,6 @@ package com.google.firebase.quickstart.database;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +17,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -54,7 +50,6 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 /*
 2017 _09_30 이재인 일단 이미지 올리는 것 완료
@@ -87,10 +82,9 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
     private StorageReference mStorageRef;
     String StringUid;
     FirebaseUser user;
-
+    String downloadUri;//이미지 저장경로
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
-    String StringEmail;
-    String photoUri;
+
 
 
 
@@ -106,7 +100,6 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         StringUid = user.getUid();
-        StringEmail = user.getEmail();
 
 
         mTitleField = (EditText) findViewById(R.id.field_title);
@@ -146,7 +139,6 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
             @Override
             public void onClick(View v) {
                 submitPost();
-
 
             }
         });
@@ -188,8 +180,6 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
  */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
-
 
         LatLng SEOUL = new LatLng(lat, lon);
         MarkerOptions markerOptions = new MarkerOptions();
@@ -243,7 +233,7 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // Write new post
-                            writeNewPost(userId, user.username, title, body,stLat,stLon, photoUri);
+                            writeNewPost(userId, user.username, title, body,stLat,stLon,downloadUri);
                         }
 
                         // Finish this Activity, back to the stream
@@ -261,8 +251,6 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
                     }
                 });
         // [END single_value_read]
-        sendNotification(body);
-
     }
 
     private void setEditingEnabled(boolean enabled) {
@@ -351,7 +339,7 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
             mProgressDialog.show();
 
             final Uri uri = data.getData();
-            filepath = mStorageRef.child("users").child(user.getEmail()).child(uri.getLastPathSegment());
+            filepath = mStorageRef.child("users").child(StringUid).child(uri.getLastPathSegment());
 
             filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -363,36 +351,7 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
                         mImageView.setImageBitmap(bitmap);//이미지뷰에 이미지 저장
 
                         @SuppressWarnings("VisibleForTests")  Uri downloadUri = taskSnapshot.getDownloadUrl();
-                        photoUri = String.valueOf(downloadUri);
-                        Log.d("photoUri",String.valueOf(downloadUri));
-
-
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference myRef = database.getReference("photo");
-
-
-                        Hashtable<String,String> lostThingPhoto = new Hashtable<String, String>();
-
-                        lostThingPhoto.put("email",StringUid);
-                        lostThingPhoto.put("photouri",photoUri);
-
-                        myRef.child(StringUid).setValue(lostThingPhoto);
-                        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                String s = dataSnapshot.getValue().toString();
-                                Log.d("Profile",s);
-                                if (dataSnapshot!= null){
-                                    Toast.makeText(NewPostActivity.this,"업로드 완료",Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-
+                        Log.d(TAG,"photouri: "+downloadUri);
                     }catch (IOException e ){
                         e.printStackTrace();
                     }
@@ -405,27 +364,17 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
                 }
             });
 
+            filepath.child("users").child(StringUid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    downloadUri =filepath.getPath();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
 
+                }
+            });
         }
-    }
-
-    private void sendNotification(String body){
-        Intent intent = new Intent(this,MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0 /* 리퀘스트 코드*/,intent,PendingIntent.FLAG_ONE_SHOT);
-
-        Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notifiBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("새로운 글이 등록됬어요")
-                .setContentText(body)
-                .setAutoCancel(true)
-                .setSound(notificationSound)
-                .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0,/*ID of notification */notifiBuilder.build());
-
     }
 }

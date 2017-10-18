@@ -1,5 +1,17 @@
 /*
-2017_10_11 이재인 MYinformation 프래그먼트 추가
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.google.firebase.quickstart.database;
@@ -10,18 +22,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.quickstart.database.Notification.MyFirebaseMessagingService;
 import com.google.firebase.quickstart.database.fragment.MyPostsFragment;
 import com.google.firebase.quickstart.database.fragment.MyTopPostsFragment;
-import com.google.firebase.quickstart.database.fragment.MyInformation;
 import com.google.firebase.quickstart.database.fragment.RecentPostsFragment;
 
 public class  MainActivity extends BaseActivity {
@@ -40,20 +48,14 @@ public class  MainActivity extends BaseActivity {
         // Create the adapter that will return a fragment for each section
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
-                    new MyInformation(),
                     new MyPostsFragment(),
                     new RecentPostsFragment(),
                     new MyTopPostsFragment(),
-
-
             };
             private final String[] mFragmentNames = new String[] {
-                    getString(R.string.heading_my_information),
                     getString(R.string.heading_recent),
                     getString(R.string.heading_my_posts),
                     getString(R.string.heading_my_top_posts)
-
-
             };
             @Override
             public Fragment getItem(int position) {
@@ -81,16 +83,7 @@ public class  MainActivity extends BaseActivity {
                 startActivity(new Intent(MainActivity.this, NewPostActivity.class));
             }
         });
-        /*
-        2017_10_12 이재인 firebase notification 가능하도록
-         */
-
-        String token = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG,"token: "+token);
-        //Toast.makeText(MainActivity.this,token,Toast.LENGTH_LONG).show();
-
-
-    }//oncreate end
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -126,6 +119,5 @@ public class  MainActivity extends BaseActivity {
         }
 
     }
-
 
 }

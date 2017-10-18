@@ -25,14 +25,14 @@ public class Post {
     public int starCount = 0;
     public String lon;
     public String lat;
-    public String photoUri;
+    public Uri photoUri;
     public Map<String, Boolean> stars = new HashMap<>();
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Post(String uid, String author, String title, String body, String lon, String lat ,String photoUri) {
+    public Post(String uid, String author, String title, String body, String lon, String lat ,Uri photoUri) {
         this.uid = uid;
         this.author = author;
         this.title = title;

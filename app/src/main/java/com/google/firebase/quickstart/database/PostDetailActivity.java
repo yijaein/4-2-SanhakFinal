@@ -3,14 +3,10 @@ package com.google.firebase.quickstart.database;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,10 +24,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,8 +35,6 @@ import com.google.firebase.quickstart.database.models.Comment;
 import com.google.firebase.quickstart.database.models.Post;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,7 +45,6 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     2017_09_28 이재인 맵뷰 추가
     2017_09_28 이재인 맵 프래그먼트 추가 디비에서 직접 좌표값을 불러와야함
     2017_10_01 이재인 글에 있는 좌표값을 불러와서 지도에 띄우기는 성공했으나 바로바로 뜨지는 않는다  -> 나중에 수정
-    2017_10_11 이재인 글을 등록 시 좌표값과 사진을 저장해서 띄우기 성공 -> 글을 등록하면 바로 볼 수 있도록 수정
  */
     private static final String TAG = "PostDetailActivity";
 
@@ -76,7 +65,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
 
     /*
     2017_09_29 이재인 일단 디비에서 좌표값을 받아와 PostDetailActivity에 뿌려주기 위해 쓰이는 변수
-    2017_10_02 이재인 Post.class로 downloadUri를 받아온다.
+
      */
     private String mlon;
     private String mlat;
@@ -84,16 +73,9 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
 
     public static double dLat =0;
     public static double dLon =0;
+    private ImageView mPostDetailImgView;
 
     private StorageReference mStorageRef;
-    String downloadUri;//이미지 저장경로
-/*
-        2017_10_11 이재인 이미지 다운로드 추가
- */
-    String StringUid;
-    String StringEmail;
-    FirebaseUser user;
-    ImageView mPostDetail ;
 
 
 
@@ -126,7 +108,9 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         mCommentField = (EditText) findViewById(R.id.field_comment_text);
         mCommentButton = (Button) findViewById(R.id.button_post_comment);
         mCommentsRecycler = (RecyclerView) findViewById(R.id.recycler_comments);
+        mPostDetailImgView =(ImageView)findViewById(R.id.postdetailImgView);
 
+        mPostDetailImgView.setImageResource(R.drawable.parbin);
 
 
 
@@ -147,14 +131,6 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         일단 post액티비티에서 값을 불러와서 그 값을 PostDetail에 저장한다
         mlon은 불러온 값이고 String으로 저장되어 있어서 그 값을 다시 float으로 변환해서 사용한다 =--> mapfragment에 좌표값으로 사용
          */
-        /*
-        2017_10_11 이재인 추가
-         */
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        StringUid = user.getUid();
-        StringEmail = user.getEmail();
-        mPostDetail =(ImageView)findViewById(R.id.postdetailImgView);
-
 
 
     }//oncreate end
@@ -179,7 +155,6 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 mlat=post.lat;
                 mlon=post.lon;
 
-
                 /*
                 2017_09_28 이재인 글을 쓸 때 DB에 저장은 완료했는데 불러와서 지도에 뿌려줘야함
                  */
@@ -189,14 +164,8 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
 
                 dLat = Double.parseDouble(mlat);
                 dLon = Double.parseDouble(mlon);
-
-
-
                 Log.d("Tag2","DB Lat:"+dLat);
                 Log.d("Tag2","DB Lon:"+dLon);
-
-                downloadUri = post.photoUri;
-                Log.d("Tag2","photoUri:"+downloadUri);
 
             }
 
@@ -220,49 +189,10 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         mAdapter = new CommentAdapter(this, mCommentsReference);
         mCommentsRecycler.setAdapter(mAdapter);
 
-        /*
-        2017_10_02 이재인 시작시 사진을 받아옴
-        2017_10_11 이재인 사진 받아오기 완료 피카소 이용
-         */
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
-
-
-        myRef.child("users").child(StringUid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue().toString();
-                String stPhoto = downloadUri;
-
-                if (TextUtils.isEmpty(stPhoto)){
-
-                }else{
-                    Picasso.with(PostDetailActivity.this).load(stPhoto).fit().centerInside().into(mPostDetail, new Callback.EmptyCallback() {
-                        @Override public void onSuccess() {
-                            // Index 0 is the image view.
-                           Log.d(TAG,"SUCCESS");
-                        }
-                    });
-                }
 
 
 
-                Log.d(TAG, "Value is: " + value);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
-
-
-
-    }//onStartEnd
+    }
 /*
     2017_09_28 이재인 구글맵 프래그먼트 추가
  */
@@ -488,9 +418,6 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         }
 
     }
-/*
-    2017_10_02 이재인 일단 downloadUri값을 NewPostActivity에서 받아와서 picasso로 출력한다.
- */
 
 
 }
