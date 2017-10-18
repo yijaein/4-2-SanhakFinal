@@ -12,7 +12,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -50,12 +49,14 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
+
+import static com.google.firebase.quickstart.database.R.id.lostThingImgView;
+
 /*
 2017 _09_30 이재인 일단 이미지 올리는 것 완료
  */
-
-import static com.google.firebase.quickstart.database.R.id.lostThingImgView;
 
 public class NewPostActivity extends BaseActivity implements OnMapReadyCallback {
 
@@ -82,9 +83,10 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
     private StorageReference mStorageRef;
     String StringUid;
     FirebaseUser user;
-    String downloadUri;//이미지 저장경로
-    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
 
+    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
+    String StringEmail;
+    String photoUri;
 
 
 
@@ -100,6 +102,7 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         StringUid = user.getUid();
+        StringEmail = user.getEmail();
 
 
         mTitleField = (EditText) findViewById(R.id.field_title);
@@ -181,6 +184,8 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+
+
         LatLng SEOUL = new LatLng(lat, lon);
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(SEOUL);
@@ -233,7 +238,7 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // Write new post
-                            writeNewPost(userId, user.username, title, body,stLat,stLon,downloadUri);
+                            writeNewPost(userId, user.username, title, body,stLat,stLon, photoUri);
                         }
 
                         // Finish this Activity, back to the stream
@@ -286,7 +291,7 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
     public boolean checkPermissionREAD_EXTERNAL_STORAGE(
             final Context context) {
         int currentAPIVersion = Build.VERSION.SDK_INT;
-        if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
+        if (currentAPIVersion >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(context,
                     android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(
@@ -339,7 +344,7 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
             mProgressDialog.show();
 
             final Uri uri = data.getData();
-            filepath = mStorageRef.child("users").child(StringUid).child(uri.getLastPathSegment());
+            filepath = mStorageRef.child("users").child(user.getEmail()).child(uri.getLastPathSegment());
 
             filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -351,7 +356,36 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
                         mImageView.setImageBitmap(bitmap);//이미지뷰에 이미지 저장
 
                         @SuppressWarnings("VisibleForTests")  Uri downloadUri = taskSnapshot.getDownloadUrl();
-                        Log.d(TAG,"photouri: "+downloadUri);
+                        photoUri = String.valueOf(downloadUri);
+                        Log.d("photoUri",String.valueOf(downloadUri));
+
+
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference("photo");
+
+
+                        Hashtable<String,String> lostThingPhoto = new Hashtable<String, String>();
+
+                        lostThingPhoto.put("email",StringUid);
+                        lostThingPhoto.put("photouri",photoUri);
+
+                        myRef.child(StringUid).setValue(lostThingPhoto);
+                        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String s = dataSnapshot.getValue().toString();
+                                Log.d("Profile",s);
+                                if (dataSnapshot!= null){
+                                    Toast.makeText(NewPostActivity.this,"업로드 완료",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
                     }catch (IOException e ){
                         e.printStackTrace();
                     }
@@ -364,17 +398,7 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
                 }
             });
 
-            filepath.child("users").child(StringUid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    downloadUri =filepath.getPath();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
 
-                }
-            });
         }
     }
 }

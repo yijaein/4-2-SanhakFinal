@@ -1,7 +1,5 @@
 package com.google.firebase.quickstart.database.models;
 
-import android.net.Uri;
-
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
@@ -25,14 +23,14 @@ public class Post {
     public int starCount = 0;
     public String lon;
     public String lat;
-    public Uri photoUri;
+    public String photoUri;
     public Map<String, Boolean> stars = new HashMap<>();
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Post(String uid, String author, String title, String body, String lon, String lat ,Uri photoUri) {
+    public Post(String uid, String author, String title, String body, String lon, String lat , String photoUri) {
         this.uid = uid;
         this.author = author;
         this.title = title;

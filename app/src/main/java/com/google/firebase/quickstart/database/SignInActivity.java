@@ -1,8 +1,15 @@
 package com.google.firebase.quickstart.database;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +27,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.quickstart.database.models.User;
 
 public class SignInActivity extends BaseActivity implements View.OnClickListener {
-
+/*
+    2017_10_14 이재인 회원가입 시 Notification으로 축하메시지 ->  가입 시 글 쓰도록 유도
+ */
     private static final String TAG = "SignInActivity";
 
     private DatabaseReference mDatabase;
@@ -106,12 +115,17 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
                         if (task.isSuccessful()) {
                             onAuthSuccess(task.getResult().getUser());
+
+                            NotificationSomethings();
+
                         } else {
                             Toast.makeText(SignInActivity.this, "Sign Up Failed",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+
+
     }
 
     private void onAuthSuccess(FirebaseUser user) {
@@ -168,5 +182,38 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         } else if (i == R.id.button_sign_up) {
             signUp();
         }
+    }
+
+    public void NotificationSomethings() {
+
+
+        Resources res = getResources();
+
+        Intent notificationIntent = new Intent(this, NewPostActivity.class);
+        notificationIntent.putExtra("notificationId", 9999); //전달할 값
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+
+        builder.setContentTitle("회원가입을 축하드립니다.")
+                .setContentText("가입 첫글을 등록하시겠습니까?")
+                .setTicker("새로 글을 등록하시겠습니까?")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(res, R.mipmap.ic_launcher))
+                .setContentIntent(contentIntent)
+                .setAutoCancel(true)
+                .setWhen(System.currentTimeMillis())
+                .setDefaults(Notification.DEFAULT_ALL);
+
+
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            builder.setCategory(Notification.CATEGORY_MESSAGE)
+                    .setPriority(Notification.PRIORITY_HIGH)
+                    .setVisibility(Notification.VISIBILITY_PUBLIC);
+        }
+
+        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.notify(1234, builder.build());
     }
 }

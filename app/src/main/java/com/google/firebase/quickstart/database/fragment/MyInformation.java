@@ -8,13 +8,15 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,7 +39,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.quickstart.database.Information;
+import com.google.firebase.quickstart.database.MainActivity;
 import com.google.firebase.quickstart.database.Map.MapsActivity;
 import com.google.firebase.quickstart.database.Map.PermissionUtils;
 import com.google.firebase.quickstart.database.R;
@@ -46,10 +48,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.quickstart.database.models.Post;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
-
-
 
 
 /**
@@ -61,7 +59,7 @@ import static android.content.Context.NOTIFICATION_SERVICE;
  */
 
 public class MyInformation extends android.support.v4.app.Fragment implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback, LocationListener,GoogleMap.OnMarkerClickListener{
-    private static final String TAG = "PostDetailActivity";
+    private static final String TAG = "MyInformation";
     private FirebaseAuth mAuth;
     FirebaseUser user;
     String StringUid;
@@ -90,6 +88,7 @@ public class MyInformation extends android.support.v4.app.Fragment implements On
 
     /*
     2017_10_13 이재인 추가
+    2017_10_14 이재인 내 위치 좌표값 불러와서 마커 찍힌 곳과 거리를 구하여 일정 거리 이하에 들어오면 notification을 띄운다
      */
     public static LocationManager locationManager;
     public static Location location;
@@ -103,6 +102,8 @@ public class MyInformation extends android.support.v4.app.Fragment implements On
     double distance;
 
     Location point;
+
+    String app_server_url = "http://jilee317.dothome.co.kr/php/fcm_insert.php";
 
 
     public MyInformation() {
@@ -122,6 +123,8 @@ public class MyInformation extends android.support.v4.app.Fragment implements On
         TextView hello = (TextView) v.findViewById(R.id.hello);
         hello.setText("안녕하십니까 " + Stringemail + "님");
         mTitleView = (TextView) v.findViewById(R.id.post_title);
+
+
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.AllMap);
@@ -150,7 +153,7 @@ public class MyInformation extends android.support.v4.app.Fragment implements On
         LocationManager locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
 
         locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER,
-                1000,
+                2000,
                 10, this);
 
 
@@ -185,6 +188,8 @@ public class MyInformation extends android.support.v4.app.Fragment implements On
         databaseReference.child("posts").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+
                 Post post = dataSnapshot.getValue(Post.class);
 
                 TitleView = post.title;
@@ -204,14 +209,24 @@ public class MyInformation extends android.support.v4.app.Fragment implements On
                     Log.d("Tag4","DB Lon:"+dLon);
 
                 }
-                if (dLat != 0 || dLon !=0){
+                if (dLat != 0 && dLon !=0 &&TitleView !=null){
                     for(int i=0; i<100;i++){
                         MarkerOptions markerOptions = new MarkerOptions();
                         markerOptions
-                                .position(new LatLng(dLat,dLon))
+                                .position(new LatLng(dLon,dLat))
                                 .title(TitleView)
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_phone));
-                            mMap.addMarker(markerOptions);
+                        mMap.addMarker(markerOptions);
+
+
+
+                        point = new Location("point");
+                        point.setLatitude(dLon);
+                        point.setLongitude(dLat);
+
+
+
+
 
 
                     }
@@ -254,6 +269,7 @@ public class MyInformation extends android.support.v4.app.Fragment implements On
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission to access the location is missing.
+            if (getActivity() instanceof MapsActivity)
             PermissionUtils.requestPermission((MapsActivity) getActivity(), LOCATION_PERMISSION_REQUEST_CODE,
                     Manifest.permission.ACCESS_FINE_LOCATION, true);
         } else if (mMap != null) {
@@ -264,87 +280,74 @@ public class MyInformation extends android.support.v4.app.Fragment implements On
 
     @Override
     public void onLocationChanged(Location p_location) {
+        if (location!=null)
+
+            mapTitle = "당신의 위치";
+            location = p_location;
+
+            String msg = "New Latitude: " + location.getLatitude()
+                    + "New Longitude: " + location.getLongitude();
+
+            //Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+       /*
+       2017_10_14 이재인 내 위치 저장해서 distanceTo 메소드 활용 거리를 구한다
+        */
+            Location mylocation = new Location("mylocation");
+            mylocation.setLatitude(location.getLatitude());
+            mylocation.setLongitude(location.getLongitude());
+
+            Log.d("Tag8", "myLocation" + mylocation.getLatitude());
+
+            distance = mylocation.distanceTo(point);
+
+            distance = distance/1000f;
 
 
-        mapTitle = "당신의 위치";
-        location= p_location;
+            Log.d(TAG, "거리" + distance);
+            Log.d("Tag7", "distance" + distance);
+            Toast.makeText(getActivity(), "거리:" + distance, Toast.LENGTH_LONG).show();
 
-        String msg = "New Latitude: " + location.getLatitude()
-                + "New Longitude: " + location.getLongitude();
 
-        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+            if (distance < 3) {
+                NotificationSomethings();
 
-        Log.d("Tag8","myLocation"+location.getLatitude());
-
-        distance = p_location.distanceTo(getPointLocation());
-
-        Log.d(TAG,"거리"+distance);
-        Log.d("Tag7","distance"+distance);
-        Toast.makeText(getActivity(), "거리:"+distance, Toast.LENGTH_LONG).show();
-
-        if(distance<50)
-        {
-            PendingIntent activity =null;
-                Intent intent = null;
-                intent = new Intent(getActivity().getApplicationContext(),Information.class);
-
-                activity = PendingIntent.getActivity(getActivity().getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-
-                NotificationManager nm = (NotificationManager)getActivity().getSystemService(NOTIFICATION_SERVICE);
-                if (Build.VERSION.SDK_INT < 16) {
-                    Notification n  = new Notification.Builder(getActivity())
-                            .setContentTitle("New mail from " + "test@gmail.com")
-                            .setContentText("Subject")
-                            .setSmallIcon(R.mipmap.ic_launcher)
-                            .setContentIntent(activity)
-                            .setAutoCancel(true).getNotification();
-
-                n.defaults = Notification.DEFAULT_SOUND;
-
-                NotificationManager notificationManager =
-                        (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
-                notificationManager.notify(0, n);
-            } else {
-                Notification n  = new Notification.Builder(getActivity())
-                        .setContentTitle("주변에 식당이 있어용 " + "눌러서 정보확인")
-                        .setContentText("눌러봐")
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentIntent(activity)
-                        .setAutoCancel(true).build();
-                n.defaults = Notification.DEFAULT_SOUND;
-                NotificationManager notificationManager =
-                        (NotificationManager)getActivity(). getSystemService(NOTIFICATION_SERVICE);
-                notificationManager.notify(0, n);
-                Toast.makeText(getActivity(), "뜸?", Toast.LENGTH_LONG).show();
             }
-
-        }
 
     }
-    //위치 정보
-    private Location getPointLocation(){
-        /*
-        2017_10_13 이재인 for 문으로 point 좌표 생성
-         */
-        if (dLat != 0 && dLon !=0){
+//    //위치 정보
+//    private Location getPointLocation(){
+//        /*
+//        2017_10_13 이재인 for 문으로 point 좌표 생성
+//         */
+//
+//        if (dLat != 0 && dLon !=0){
+//            for(int i=0; i<100;i++){
+//
+//                Location point = new Location("point");
+//                point.setLatitude(dLon);
+//                point.setLongitude(dLat);
+//
+//
+//
+//            }
+//        }
 
-            for(int i=0; i<100;i++){
-                point = new Location("point");
-                point.setLatitude(dLat);
-                point.setLongitude(dLon);
+//                Location point = new Location("point");
+//                point.setLatitude(dLon);
+//                point.setLongitude(dLat);
+//
+//            Toast.makeText(getActivity(),"포인트값"+point,Toast.LENGTH_SHORT).show();
+//
 
 
-
-            }
-        }
 
 
 //        Location point = new Location("point");
 //        point.setLatitude(36.545886);
 //        point.setLongitude(128.792530);
 //        return point;
-        return point;
-    }
+    //}
+
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle bundle) {
@@ -366,10 +369,46 @@ public class MyInformation extends android.support.v4.app.Fragment implements On
         /*
         2017_10_13 이재인  나중에 마커 클릭 시 해당 글로 이동하도록 만들어야함
          */
+
         Toast.makeText(getActivity(),"마커 클릭 ",Toast.LENGTH_SHORT).show();
 
         return false;
     }
+
+    public void NotificationSomethings() {
+
+
+        Resources res = getResources();
+
+        Intent notificationIntent = new Intent(getActivity(), MainActivity.class);
+        notificationIntent.putExtra("notificationId", 9999); //전달할 값
+        PendingIntent contentIntent = PendingIntent.getActivity(getActivity(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getActivity());
+
+        builder.setContentTitle("근처에 잃어버린 물건이 있습니다.")
+                .setContentText("확인해보시겠습니까?")
+                .setTicker("찾아주세용")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(res, R.mipmap.ic_launcher))
+                .setContentIntent(contentIntent)
+                .setAutoCancel(true)
+                .setWhen(System.currentTimeMillis())
+                .setDefaults(Notification.DEFAULT_ALL);
+
+
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            builder.setCategory(Notification.CATEGORY_MESSAGE)
+                    .setPriority(Notification.PRIORITY_HIGH)
+                    .setVisibility(Notification.VISIBILITY_PUBLIC);
+        }
+
+        NotificationManager nm = (NotificationManager)getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.notify(1234, builder.build());
+    }
+
+
 
 
 }

@@ -17,21 +17,35 @@
 package com.google.firebase.quickstart.database;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.quickstart.database.fragment.MyInformation;
 import com.google.firebase.quickstart.database.fragment.MyPostsFragment;
 import com.google.firebase.quickstart.database.fragment.MyTopPostsFragment;
 import com.google.firebase.quickstart.database.fragment.RecentPostsFragment;
 
+
+/*
+    2017_10_18 이재인 계정 아이콘을 누를 시 계정으로 이동
+ */
 public class  MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
@@ -44,15 +58,27 @@ public class  MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /*
+        2017_10_18 이재인 커스텀 타이틀 바
+         */
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.action_bar);
+
+
+
+
 
         // Create the adapter that will return a fragment for each section
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
+                    new MyInformation(),
                     new MyPostsFragment(),
                     new RecentPostsFragment(),
                     new MyTopPostsFragment(),
+
             };
             private final String[] mFragmentNames = new String[] {
+                    getString(R.string.heading_my_information),
                     getString(R.string.heading_recent),
                     getString(R.string.heading_my_posts),
                     getString(R.string.heading_my_top_posts)
@@ -83,6 +109,8 @@ public class  MainActivity extends BaseActivity {
                 startActivity(new Intent(MainActivity.this, NewPostActivity.class));
             }
         });
+
+
     }
 
     @Override
@@ -95,17 +123,19 @@ public class  MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
         if (i == R.id.action_logout) {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(this, SignInActivity.class));
-            finish();
+//            FirebaseAuth.getInstance().signOut();
+//            startActivity(new Intent(this, SignInActivity.class));
+//            finish();
+            Intent intent = new Intent(MainActivity.this,UserActivity.class);
+            startActivity(intent);
             return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
     }
-/*
-    2017_09_28 이재인 뒤로가기
- */
+    /*
+        2017_09_28 이재인 뒤로가기
+     */
     @Override
     public void onBackPressed() {
 
@@ -119,5 +149,8 @@ public class  MainActivity extends BaseActivity {
         }
 
     }
+
+
+
 
 }
