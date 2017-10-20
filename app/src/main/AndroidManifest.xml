@@ -13,6 +13,7 @@
 
     <!--
             2017_10_18 이재인 커스턴 타이틀바 생성, NewPostActivity,PostDetatilAcitivity NotitleBar 로 만듬
+            2017_10_20 이재인 스플레쉬 화면 생성 현재 intent-filter -> splash
 
     !-->
 
@@ -34,11 +35,7 @@
         <activity android:name=".SignInActivity"
             android:theme="@style/AppTheme.NoActionBar"
             >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
 
@@ -69,6 +66,19 @@
             >
 
         </activity>
+
+        <activity android:name=".SplashActivity"
+            android:theme="@style/SplashTheme"
+
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
     </application>
 
 </manifest>

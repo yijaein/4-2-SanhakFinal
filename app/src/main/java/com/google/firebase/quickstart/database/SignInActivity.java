@@ -40,6 +40,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private Button mSignInButton;
     private Button mSignUpButton;
 
+    long lastPressed;//뒤로가기 버튼 누를 때 시간
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -216,4 +218,21 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(1234, builder.build());
     }
+
+    @Override
+    public void onBackPressed() {
+
+        if(System.currentTimeMillis() - lastPressed<1500){
+            finish();
+        }else{
+            Toast.makeText(this,"한번 더 누르면 종료됩니다.",Toast.LENGTH_LONG).show();
+            lastPressed= System.currentTimeMillis();
+
+
+        }
+
+    }
+
+
+
 }

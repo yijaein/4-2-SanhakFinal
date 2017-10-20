@@ -2,6 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_view_list_black_48dp"
+        android:id="@+id/action_menu"
+        android:layout_gravity="center"
+        android:background="@color/white"
+        android:layout_marginRight="10dp"
+        />
     
     <ImageView
         android:layout_width="40dp"

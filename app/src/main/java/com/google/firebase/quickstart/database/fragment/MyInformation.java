@@ -106,6 +106,7 @@ public class MyInformation extends android.support.v4.app.Fragment implements On
     String app_server_url = "http://jilee317.dothome.co.kr/php/fcm_insert.php";
 
 
+
     public MyInformation() {
 
     }
@@ -153,7 +154,7 @@ public class MyInformation extends android.support.v4.app.Fragment implements On
         LocationManager locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
 
         locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER,
-                2000,
+                8000,
                 10, this);
 
 
@@ -308,10 +309,17 @@ public class MyInformation extends android.support.v4.app.Fragment implements On
             Toast.makeText(getActivity(), "거리:" + distance, Toast.LENGTH_LONG).show();
 
 
-            if (distance < 3) {
-                NotificationSomethings();
 
-            }
+        /*
+        2017_10_19 이재인 노티피케이션 거리 수정
+         */
+
+        if (distance<1){
+            NotificationSomethings();
+
+        }
+
+
 
     }
 //    //위치 정보
@@ -389,8 +397,8 @@ public class MyInformation extends android.support.v4.app.Fragment implements On
         builder.setContentTitle("근처에 잃어버린 물건이 있습니다.")
                 .setContentText("확인해보시겠습니까?")
                 .setTicker("찾아주세용")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(res, R.mipmap.ic_launcher))
+                .setSmallIcon(R.drawable.ic_find_loc)
+                .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.ic_find_loc))
                 .setContentIntent(contentIntent)
                 .setAutoCancel(true)
                 .setWhen(System.currentTimeMillis())
