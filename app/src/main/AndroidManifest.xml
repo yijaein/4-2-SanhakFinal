@@ -29,7 +29,7 @@
             android:theme="@style/AppTheme"
              />
         <activity android:name=".NewPostActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+
             />
 
         <activity android:name=".SignInActivity"
@@ -40,7 +40,7 @@
 
 
         <activity android:name=".PostDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+
             ></activity>
 
         <meta-data
@@ -62,12 +62,12 @@
             </intent-filter>
         </service>
         <activity android:name=".UserActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:noHistory="true"
             >
 
         </activity>
 
-        <activity android:name=".SplashActivity"
+        <activity android:name=".Utils.SplashActivity"
             android:theme="@style/SplashTheme"
 
             >

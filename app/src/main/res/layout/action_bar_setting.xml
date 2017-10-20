@@ -2,17 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+<!--
     <ImageButton
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/ic_view_list_black_48dp"
-        android:id="@+id/action_menu"
+        android:id="@+id/action_back"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_gravity="center"
-        android:background="@color/white"
         android:layout_marginRight="10dp"
-        />
-    
+        android:background="@color/white"
+        android:src="@drawable/ic_chevron_left_black_48dp" />
+!-->
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -30,16 +29,8 @@
         android:text="찾아줘"
         android:textStyle="normal"
         android:textColor="@color/black"
-        android:textSize="21sp"
-        />
+        android:textSize="21sp"/>
 
-    <ImageButton
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:id="@+id/action_bar_imgBtn"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_person_black_18dp"
-        android:layout_marginLeft="200dp"
-        />
+
 
 </LinearLayout>

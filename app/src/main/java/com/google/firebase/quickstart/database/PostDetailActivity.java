@@ -1,7 +1,9 @@
 package com.google.firebase.quickstart.database;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -146,6 +149,22 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         StringEmail = user.getEmail();
         mPostDetail =(ImageView)findViewById(R.id.postdetailImgView);
 
+
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.action_bar_setting);
+
+                /*
+        2017_10_20 이재인 뒤로가기 버튼
+         */
+//        ImageButton backBtn = (ImageButton)findViewById(R.id.action_back);
+//        backBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(PostDetailActivity.this,MainActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
 
     }//oncreate end

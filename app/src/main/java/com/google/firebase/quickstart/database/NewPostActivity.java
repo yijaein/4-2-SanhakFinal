@@ -17,11 +17,13 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -170,8 +172,21 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
 
 
 
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.action_bar_setting);
 
-
+                /*
+        2017_10_20 이재인 뒤로가기 버튼
+         */
+//        ImageButton backBtn = (ImageButton)findViewById(R.id.action_back);
+//        backBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(NewPostActivity.this,MainActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
 
 

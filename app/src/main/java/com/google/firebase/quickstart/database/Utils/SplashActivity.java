@@ -1,9 +1,11 @@
-package com.google.firebase.quickstart.database;
+package com.google.firebase.quickstart.database.Utils;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+
+import com.google.firebase.quickstart.database.SignInActivity;
 
 /**
  * Created by Jan on 2017-10-20.

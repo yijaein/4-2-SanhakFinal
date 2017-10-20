@@ -4,16 +4,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * Created by Jan on 2017-10-19.
+ * 2017_10_20 이재인 뒤로가기 버튼 추가
+ *
  */
 
 public class UserActivity extends AppCompatActivity {
@@ -22,7 +26,31 @@ public class UserActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_activity);
+
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.action_bar_setting);
+
+        /*
+        2017_10_20 이재인 뒤로가기 버튼
+         */
+
+//        ImageButton backBtn = (ImageButton)findViewById(R.id.action_back);
+//        backBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+//                startActivity(intent);
+//                finish();
+//
+//            }
+//        });
+
+
+        /*
+        2017_10_19 이재인 다이얼로그를 띄어서 한 번 더 물어봄 -> 어플 종료
+         */
         Button button = (Button)findViewById(R.id.logout_btn);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

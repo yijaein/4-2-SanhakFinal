@@ -34,6 +34,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,7 +48,7 @@ import com.google.firebase.quickstart.database.fragment.RecentPostsFragment;
 /*
     2017_10_18 이재인 계정 아이콘을 누를 시 계정으로 이동
  */
-public class  MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
 
@@ -65,6 +67,18 @@ public class  MainActivity extends BaseActivity {
         getSupportActionBar().setCustomView(R.layout.action_bar);
 
 
+        /*
+        2017_10_20 이재인 네비게이션 메뉴
+
+         */
+
+        ImageButton naviBtn = (ImageButton)findViewById(R.id.action_menu);
+        naviBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
 
 
