@@ -23,8 +23,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/hello"
+        android:id="@+id/total_post"
+        android:layout_marginLeft="70dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/total_post"
         android:layout_marginTop="20dp"
         android:text="현재 잃어버린 물건 위치 전부"
         android:id="@+id/txtinfo"/>

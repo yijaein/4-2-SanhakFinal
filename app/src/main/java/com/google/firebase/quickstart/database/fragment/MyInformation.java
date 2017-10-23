@@ -39,6 +39,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.quickstart.database.MainActivity;
 import com.google.firebase.quickstart.database.Map.MapsActivity;
 import com.google.firebase.quickstart.database.Map.PermissionUtils;
@@ -124,6 +125,25 @@ public class MyInformation extends android.support.v4.app.Fragment implements On
         TextView hello = (TextView) v.findViewById(R.id.hello);
         hello.setText("안녕하십니까 " + Stringemail + "님");
         mTitleView = (TextView) v.findViewById(R.id.post_title);
+        final TextView jungmin =(TextView)v.findViewById(R.id.total_post);
+
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("posts");
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println("Size "+dataSnapshot.getChildrenCount());
+                jungmin.setText("등록된 잃어버린 물건 수 :"+dataSnapshot.getChildrenCount());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
 
 

@@ -1,9 +1,11 @@
 package com.google.firebase.quickstart.database;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -32,6 +34,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.quickstart.database.models.Comment;
 import com.google.firebase.quickstart.database.models.Post;
@@ -67,10 +70,12 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     private EditText mCommentField;
     private Button mCommentButton;
     private RecyclerView mCommentsRecycler;
+    private String mAuthor;
 
     /*
     2017_09_29 이재인 일단 디비에서 좌표값을 받아와 PostDetailActivity에 뿌려주기 위해 쓰이는 변수
     2017_10_02 이재인 Post.class로 downloadUri를 받아온다.
+    2017_10_23 이재인 글을 삭제할 경우 일어나는 nullPointException 오류 try/catch로  수정 글쓴이와 로그인한 아이디와 비교하여 같을 경우 버튼이 생성 버튼을 누르면 게시글이 삭제됨 -> 내일 할 일 사진도 같이 지운다.
      */
     private String mlon;
     private String mlat;
@@ -80,6 +85,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     public static double dLon =0;
 
     private StorageReference mStorageRef;
+
     String downloadUri;//이미지 저장경로
 /*
         2017_10_11 이재인 이미지 다운로드 추가
@@ -88,6 +94,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     String StringEmail;
     FirebaseUser user;
     ImageView mPostDetail ;
+    Button findedBtn;
 
 
 
@@ -120,11 +127,6 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         mCommentField = (EditText) findViewById(R.id.field_comment_text);
         mCommentButton = (Button) findViewById(R.id.button_post_comment);
         mCommentsRecycler = (RecyclerView) findViewById(R.id.recycler_comments);
-
-
-
-
-
         mCommentButton.setOnClickListener(this);
         mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
 
@@ -134,14 +136,10 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
-
-
-
         /*
         일단 post액티비티에서 값을 불러와서 그 값을 PostDetail에 저장한다
         mlon은 불러온 값이고 String으로 저장되어 있어서 그 값을 다시 float으로 변환해서 사용한다 =--> mapfragment에 좌표값으로 사용
-         */
-        /*
+
         2017_10_11 이재인 추가
          */
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -150,21 +148,6 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         mPostDetail =(ImageView)findViewById(R.id.postdetailImgView);
 
 
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.action_bar_setting);
-
-                /*
-        2017_10_20 이재인 뒤로가기 버튼
-         */
-//        ImageButton backBtn = (ImageButton)findViewById(R.id.action_back);
-//        backBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(PostDetailActivity.this,MainActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
 
 
     }//oncreate end
@@ -182,31 +165,111 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 Post post = dataSnapshot.getValue(Post.class);
-                // [START_EXCLUDE]
-                mAuthorView.setText(post.author);
-                mTitleView.setText(post.title);
-                mBodyView.setText(post.body);
-                mlat=post.lat;
-                mlon=post.lon;
+                /*
+                2017_10_23 이재인 글이 삭제되었을 때 오류 try/catch로 묶어버림
+                 */
 
+                try{
+                    // [START_EXCLUDE]
+                    mAuthorView.setText(post.author);
+                    mTitleView.setText(post.title);
+                    mBodyView.setText(post.body);
+                    mAuthor = post.author;
+                    Log.d("Tag1", "Author " + mAuthor);
+
+                    if(post.lat != null || post.lon!=null)
+                        mlat=post.lat;
+                    mlon=post.lon;
 
                 /*
                 2017_09_28 이재인 글을 쓸 때 DB에 저장은 완료했는데 불러와서 지도에 뿌려줘야함
                  */
-                Log.d("Tag1","DB:lat "+mlat);
-                Log.d("Tag1","DB:lon "+mlon);
-                // [END_EXCLUDE]
+                    Log.d("Tag1","DB:lat "+mlat);
+                    Log.d("Tag1","DB:lon "+mlon);
+                    // [END_EXCLUDE]
 
-                dLat = Double.parseDouble(mlat);
-                dLon = Double.parseDouble(mlon);
+                    dLat = Double.parseDouble(mlat);
+                    dLon = Double.parseDouble(mlon);
+
+                    Log.d("Tag2","DB Lat:"+dLat);
+                    Log.d("Tag2","DB Lon:"+dLon);
+
+                    downloadUri = post.photoUri;
+                    Log.d("Tag2","photoUri:"+downloadUri);
+
+                /*
+                2017_10_23 이재인 작성자와 로그인한 아이디가 같으면 찾음 버튼이 뜬다.
+                equals() 메소드는 string 객체의 문자열을 비교 체크하는 반면, == 연산자는 객체의 참조값이 같은지를 체크합니다.
+                */
+
+                    int indexOf=StringEmail.indexOf("@");
+                    System.out.println(indexOf);
+                    String emailTrim = StringEmail.substring(0,indexOf);
+                    System.out.println(emailTrim);
+
+                    Log.d("Tag1","userEmail:"+StringEmail);
+                    Log.d("Tag1","userUid:"+StringUid);
+                    Log.d("Tag1","userEmailTrim:"+emailTrim);
 
 
+                    System.out.println(emailTrim.equals(mAuthor));
 
-                Log.d("Tag2","DB Lat:"+dLat);
-                Log.d("Tag2","DB Lon:"+dLon);
 
-                downloadUri = post.photoUri;
-                Log.d("Tag2","photoUri:"+downloadUri);
+                    if (mAuthor!=null &&mAuthor.equals(emailTrim)){
+                        findedBtn = (Button)findViewById(R.id.findedBtn);
+                        findedBtn.setVisibility(View.VISIBLE);
+                        Log.d("Tag1","userTrim"+emailTrim);
+                        Toast.makeText(PostDetailActivity.this,"작성자임",Toast.LENGTH_SHORT).show();
+                    /*
+                    2017_10_23 이재인 만약 찾음 버튼을 누르면 글을 삭제한다.
+                     */
+                        findedBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(PostDetailActivity.this);     // 여기서 this는 Activity의 this
+
+                                    // 여기서 부터는 알림창의 속성 설정
+                                builder.setTitle("확인을 누르면 게시글이 삭제됩니다.")        // 제목 설정
+                                        .setMessage("물건을 찾으셨습니까?")        // 메세지 설정
+                                        .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
+                                        .setPositiveButton("확인", new DialogInterface.OnClickListener(){
+                                            // 확인 버튼 클릭시 설정
+                                            public void onClick(DialogInterface dialog, int whichButton){
+                                                final String userId = getUid();
+                                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("/user-posts/"+userId+"/").child(mPostKey);
+                                                DatabaseReference databaseRaference1 = FirebaseDatabase.getInstance().getReference("posts").child(mPostKey);
+                                                databaseReference.removeValue();
+                                                databaseRaference1.removeValue();
+                                                Toast.makeText(PostDetailActivity.this,"버튼 눌림",Toast.LENGTH_SHORT).show();
+
+
+                                            }
+                                        })
+                                        .setNegativeButton("취소", new DialogInterface.OnClickListener(){
+                                            // 취소 버튼 클릭시 설정
+                                            public void onClick(DialogInterface dialog, int whichButton){
+                                                dialog.cancel();
+                                            }
+                                        });
+
+                                         AlertDialog dialog = builder.create();    // 알림창 객체 생성
+                                         dialog.show();    // 알림창 띄우기
+
+                            }
+                        });
+
+                    }else{
+                        findedBtn = (Button)findViewById(R.id.findedBtn);
+                        findedBtn.setVisibility(View.INVISIBLE);
+                        Toast.makeText(PostDetailActivity.this,"작성자와 다름",Toast.LENGTH_SHORT).show();
+                    }
+
+                }catch (NullPointerException e){
+                    Toast.makeText(PostDetailActivity.this,"글이 삭제되었습니다.",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(PostDetailActivity.this,MainActivity.class);
+                    startActivity(intent);
+                }
+
 
             }
 
@@ -248,7 +311,12 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 String stPhoto = downloadUri;
 
                 if (TextUtils.isEmpty(stPhoto)){
+                        Toast.makeText(PostDetailActivity.this,"이미지를 불러오지 못했습니다.",Toast.LENGTH_SHORT).show();
+                        /*
+                        2017_10_24 이재인 만약 저장된 이미지가 없다면 기본 이미지로 설정
+                         */
 
+                        Picasso.with(PostDetailActivity.this).load(R.drawable.parbin).fit().centerCrop().into(mPostDetail);
                 }else{
                     Picasso.with(PostDetailActivity.this).load(stPhoto).fit().centerInside().into(mPostDetail, new Callback.EmptyCallback() {
                         @Override public void onSuccess() {
@@ -272,6 +340,8 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
 
 
 
+
+        //  findedBtn =(Button)findViewById(R.id.findedBtn);
     }//onStartEnd
 /*
     2017_09_28 이재인 구글맵 프래그먼트 추가
@@ -281,8 +351,6 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         /*
         2017_09_29 이재인 왜 안되는 거지
          */
-
-
             LatLng SEOUL = new LatLng(dLon,dLat);
             Log.d("Tag3","DB Lat:"+dLat);
             Log.d("Tag3","DB Lon:"+dLon);

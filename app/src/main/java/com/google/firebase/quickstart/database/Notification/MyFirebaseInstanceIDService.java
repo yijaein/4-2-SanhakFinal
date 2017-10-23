@@ -40,32 +40,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
         Log.d(TAG,"new Token"+refreshedToken);
 
-        sendRegistrationToServer(refreshedToken);
-
 
     }
-    /*
-    2017_10_14 이재인 FCM 푸시 알림 앱 서버 시작
-     */
 
-    private void sendRegistrationToServer(String token){
-        OkHttpClient client = new OkHttpClient();
-        RequestBody body = new FormBody.Builder()
-                .add("Token", token)
-                .build();
-
-        //request
-        Request request = new Request.Builder()
-                .url("토큰 저장할라고 보낼 URL")
-                .post(body)
-                .build();
-
-        try {
-            client.newCall(request).execute();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
 }

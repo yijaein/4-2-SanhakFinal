@@ -24,7 +24,10 @@ public class Post {
     public String lon;
     public String lat;
     public String photoUri;
+
     public Map<String, Boolean> stars = new HashMap<>();
+
+
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
@@ -38,6 +41,8 @@ public class Post {
         this.lon=lon;
         this.lat= lat;
         this.photoUri = photoUri;
+
+
     }
 
     // [START post_to_map]
@@ -53,6 +58,8 @@ public class Post {
         result.put("lon",lon);
         result.put("lat",lat);
         result.put("photoUri",photoUri);
+
+
 
         return result;
     }

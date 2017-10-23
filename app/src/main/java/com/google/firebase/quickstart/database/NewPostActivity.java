@@ -7,23 +7,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -89,6 +84,7 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
     String StringEmail;
     String photoUri;
+    int countPost;
 
 
 
@@ -169,11 +165,10 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
         SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.mapfrag1);
         mapFragment.getMapAsync(this);
 
+//        checkPermissionREAD_EXTERNAL_STORAGE(getApplicationContext());
 
 
 
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.action_bar_setting);
 
                 /*
         2017_10_20 이재인 뒤로가기 버튼
@@ -186,16 +181,17 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
 //                startActivity(intent);
 //                finish();
 //            }
-//        });
 
-
-
+    showDialog(1);
 
 
     }//oncreate end
-/*
-    구글맵
- */
+
+
+
+    /*
+        구글맵
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -237,6 +233,8 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
 
         // [START single_value_read]
         final String userId = getUid();
+
+
         mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -254,6 +252,7 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
                         } else {
                             // Write new post
                             writeNewPost(userId, user.username, title, body,stLat,stLon, photoUri);
+
                         }
 
                         // Finish this Activity, back to the stream
@@ -271,7 +270,14 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
                     }
                 });
         // [END single_value_read]
+
     }
+
+
+
+
+
+
 
     private void setEditingEnabled(boolean enabled) {
         mTitleField.setEnabled(enabled);
@@ -295,42 +301,15 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
         childUpdates.put("/posts/" + key, postValues);
         childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
 
+
         mDatabase.updateChildren(childUpdates);
     }
     // [END write_fan_out]
 
 
-    /*
-    2017_09_30 이재인 권한추가
-     */
-    public boolean checkPermissionREAD_EXTERNAL_STORAGE(
-            final Context context) {
-        int currentAPIVersion = Build.VERSION.SDK_INT;
-        if (currentAPIVersion >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(context,
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(
-                        (Activity) context,
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    showDialog("External storage", context,
-                            android.Manifest.permission.READ_EXTERNAL_STORAGE);
 
-                } else {
-                    ActivityCompat
-                            .requestPermissions(
-                                    (Activity) context,
-                                    new String[] { android.Manifest.permission.READ_EXTERNAL_STORAGE },
-                                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                }
-                return false;
-            } else {
-                return true;
-            }
 
-        } else {
-            return true;
-        }
-    }
+
 
     public void showDialog(final String msg, final Context context,
                            final String permission) {

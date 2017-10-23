@@ -25,7 +25,7 @@
         android:layout_marginTop="30dp"
         android:layout_gravity="center"
         android:id="@+id/btn_not_yet"
-        android:background="@drawable/img_btn_not"
+        android:background="@drawable/img_btn_creater"
         />
 
 
