@@ -5,12 +5,11 @@ import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 
-import com.google.firebase.quickstart.database.fragment.MyInformation;
+import com.google.firebase.quickstart.database.fragment.MainFragment;
 
 /**
  * Created by yayacky on 11/09/2016.
@@ -29,11 +28,11 @@ public class Utils {
     public static void showPopup(final Context context) {
         AlertDialog.Builder adb = new AlertDialog.Builder(context);
 
-        if (MyInformation.location == null) {
+        if (MainFragment.location == null) {
             adb.setTitle("위치를 찾지 못했습니다,GPS를 켜주세요");
         } else {
-            String latitude = MyInformation.location.getLatitude()+"";
-            String longitude = MyInformation.location.getLongitude()+"";
+            String latitude = MainFragment.location.getLatitude()+"";
+            String longitude = MainFragment.location.getLongitude()+"";
             adb.setTitle("너의 현재 위치 :");
             adb.setMessage("Latitude " + latitude + "\nLongitude " + longitude);
         }

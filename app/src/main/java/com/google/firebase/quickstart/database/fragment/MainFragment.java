@@ -59,8 +59,8 @@ import com.google.firebase.quickstart.database.models.Post;
  * 2017_10_13 이재인 내 위치를 좌표값으로 받아오기 ->locationManager 사용
  */
 
-public class MyInformation extends android.support.v4.app.Fragment implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback, LocationListener,GoogleMap.OnMarkerClickListener{
-    private static final String TAG = "MyInformation";
+public class MainFragment extends android.support.v4.app.Fragment implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback, LocationListener,GoogleMap.OnMarkerClickListener{
+    private static final String TAG = "MainFragment";
     private FirebaseAuth mAuth;
     FirebaseUser user;
     String StringUid;
@@ -108,7 +108,7 @@ public class MyInformation extends android.support.v4.app.Fragment implements On
 
 
 
-    public MyInformation() {
+    public MainFragment() {
 
     }
 
@@ -301,32 +301,35 @@ public class MyInformation extends android.support.v4.app.Fragment implements On
 
     @Override
     public void onLocationChanged(Location p_location) {
-        if (location!=null)
+       try{
+           if (location!=null&&location.getLatitude()!=0&&location.getLongitude()!=0) {
 
-            mapTitle = "당신의 위치";
-            location = p_location;
+               mapTitle = "당신의 위치";
+               location = p_location;
 
-            String msg = "New Latitude: " + location.getLatitude()
-                    + "New Longitude: " + location.getLongitude();
+               String msg = "New Latitude: " + location.getLatitude()
+                       + "New Longitude: " + location.getLongitude();
 
-            //Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+               //Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
        /*
        2017_10_14 이재인 내 위치 저장해서 distanceTo 메소드 활용 거리를 구한다
         */
-            Location mylocation = new Location("mylocation");
-            mylocation.setLatitude(location.getLatitude());
-            mylocation.setLongitude(location.getLongitude());
+               Location mylocation = new Location("mylocation");
+               mylocation.setLatitude(location.getLatitude());
+               mylocation.setLongitude(location.getLongitude());
 
-            Log.d("Tag8", "myLocation" + mylocation.getLatitude());
+               Log.d("Tag8", "myLocation" + mylocation.getLatitude());
+        /*
+           FATAL EXCEPTION: main
+           Process: com.google.firebase.quickstart.database, PID: 28221
+           java.lang.NullPointerException: Attempt to read from field 'double android.location.Location.mLatitude' on a null object reference
+         */
+               distance = mylocation.distanceTo(point);
 
-            distance = mylocation.distanceTo(point);
 
-            distance = distance/1000f;
-
-
-            Log.d(TAG, "거리" + distance);
-            Log.d("Tag7", "distance" + distance);
-            Toast.makeText(getActivity(), "거리:" + distance, Toast.LENGTH_LONG).show();
+               Log.d(TAG, "거리" + distance);
+               Log.d("Tag7", "distance" + distance);
+               Toast.makeText(getActivity(), "거리:" + distance, Toast.LENGTH_LONG).show();
 
 
 
@@ -334,12 +337,18 @@ public class MyInformation extends android.support.v4.app.Fragment implements On
         2017_10_19 이재인 노티피케이션 거리 수정
          */
 
-        if (distance<1){
-            NotificationSomethings();
+               if (distance < 2) {
+                   NotificationSomethings();
 
-        }
+               }
+
+           }
 
 
+        }catch (NullPointerException e ){
+           e.printStackTrace();
+
+       }
 
     }
 //    //위치 정보

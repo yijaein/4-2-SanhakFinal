@@ -17,29 +17,20 @@
 package com.google.firebase.quickstart.database;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.quickstart.database.fragment.MyInformation;
+import com.google.firebase.quickstart.database.fragment.ChatFragment;
+import com.google.firebase.quickstart.database.fragment.MainFragment;
 import com.google.firebase.quickstart.database.fragment.MyPostsFragment;
 import com.google.firebase.quickstart.database.fragment.MyTopPostsFragment;
 import com.google.firebase.quickstart.database.fragment.RecentPostsFragment;
@@ -69,6 +60,7 @@ public class MainActivity extends BaseActivity {
 
         /*
         2017_10_20 이재인 네비게이션 메뉴
+        2017_10_24 이재인 네비게이션 메뉴바 기능 추가
 
          */
 
@@ -90,17 +82,20 @@ public class MainActivity extends BaseActivity {
         // Create the adapter that will return a fragment for each section
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
-                    new MyInformation(),
+                    new MainFragment(),
                     new MyPostsFragment(),
                     new RecentPostsFragment(),
                     new MyTopPostsFragment(),
+                    new ChatFragment(),
+
 
             };
             private final String[] mFragmentNames = new String[] {
                     getString(R.string.heading_my_information),
                     getString(R.string.heading_recent),
                     getString(R.string.heading_my_posts),
-                    getString(R.string.heading_my_top_posts)
+                    getString(R.string.heading_my_top_posts),
+                    getString(R.string.heading_my_chat)
             };
             @Override
             public Fragment getItem(int position) {

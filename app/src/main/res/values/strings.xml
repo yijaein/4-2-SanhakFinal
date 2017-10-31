@@ -17,6 +17,7 @@
     <string name="heading_my_posts">모든 글</string>
     <string name="heading_my_top_posts">최고의 글</string>
     <string name="heading_my_information">홈</string>
+    <string name="heading_my_chat">채팅</string>
 
     <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>
     <string name="permission_required_toast">Location permission is required for this demo.</string>

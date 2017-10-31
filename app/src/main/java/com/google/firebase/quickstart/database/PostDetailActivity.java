@@ -45,7 +45,9 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PostDetailActivity extends BaseActivity implements View.OnClickListener,OnMapReadyCallback {
 /*
@@ -95,6 +97,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     FirebaseUser user;
     ImageView mPostDetail ;
     Button findedBtn;
+    private DatabaseReference mDatabase;
 
 
 
@@ -177,23 +180,23 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                     mAuthor = post.author;
                     Log.d("Tag1", "Author " + mAuthor);
 
-                    if(post.lat != null || post.lon!=null)
-                        mlat=post.lat;
-                    mlon=post.lon;
+                    if(post.lat != null && post.lon!=null) {
+                        mlat = post.lat;
+                        mlon = post.lon;
 
                 /*
                 2017_09_28 이재인 글을 쓸 때 DB에 저장은 완료했는데 불러와서 지도에 뿌려줘야함
                  */
-                    Log.d("Tag1","DB:lat "+mlat);
-                    Log.d("Tag1","DB:lon "+mlon);
-                    // [END_EXCLUDE]
+                        Log.d("Tag1", "DB:lat " + mlat);
+                        Log.d("Tag1", "DB:lon " + mlon);
+                        // [END_EXCLUDE]
 
-                    dLat = Double.parseDouble(mlat);
-                    dLon = Double.parseDouble(mlon);
+                        dLat = Double.parseDouble(mlat);
+                        dLon = Double.parseDouble(mlon);
 
-                    Log.d("Tag2","DB Lat:"+dLat);
-                    Log.d("Tag2","DB Lon:"+dLon);
-
+                        Log.d("Tag2", "DB Lat:" + dLat);
+                        Log.d("Tag2", "DB Lon:" + dLon);
+                    }
                     downloadUri = post.photoUri;
                     Log.d("Tag2","photoUri:"+downloadUri);
 
@@ -237,10 +240,11 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                                             public void onClick(DialogInterface dialog, int whichButton){
                                                 final String userId = getUid();
                                                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("/user-posts/"+userId+"/").child(mPostKey);
-                                                DatabaseReference databaseRaference1 = FirebaseDatabase.getInstance().getReference("posts").child(mPostKey);
+                                                final DatabaseReference databaseRaference1 = FirebaseDatabase.getInstance().getReference("posts").child(mPostKey);
                                                 databaseReference.removeValue();
                                                 databaseRaference1.removeValue();
                                                 Toast.makeText(PostDetailActivity.this,"버튼 눌림",Toast.LENGTH_SHORT).show();
+
 
 
                                             }
@@ -268,10 +272,13 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                     Toast.makeText(PostDetailActivity.this,"글이 삭제되었습니다.",Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(PostDetailActivity.this,MainActivity.class);
                     startActivity(intent);
+                    finish();
+
                 }
 
 
             }
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -569,6 +576,9 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
 /*
     2017_10_02 이재인 일단 downloadUri값을 NewPostActivity에서 받아와서 picasso로 출력한다.
  */
+
+
+
 
 
 }
