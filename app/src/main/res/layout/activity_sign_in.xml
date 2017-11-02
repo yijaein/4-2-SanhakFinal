@@ -64,7 +64,10 @@
             android:layout_height="wrap_content"
             android:text="@string/sign_up" />
 
+
+
     </LinearLayout>
+
 
 
 </RelativeLayout>

@@ -53,6 +53,7 @@ public abstract class PostListFragment extends Fragment {
         mRecycler.setHasFixedSize(true);
 
         return rootView;
+
     }
 
     @Override

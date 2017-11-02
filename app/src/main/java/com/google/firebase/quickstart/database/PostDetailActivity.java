@@ -44,7 +44,9 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,11 +75,13 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     private Button mCommentButton;
     private RecyclerView mCommentsRecycler;
     private String mAuthor;
+    private TextView mPostTime;
 
     /*
     2017_09_29 이재인 일단 디비에서 좌표값을 받아와 PostDetailActivity에 뿌려주기 위해 쓰이는 변수
     2017_10_02 이재인 Post.class로 downloadUri를 받아온다.
     2017_10_23 이재인 글을 삭제할 경우 일어나는 nullPointException 오류 try/catch로  수정 글쓴이와 로그인한 아이디와 비교하여 같을 경우 버튼이 생성 버튼을 누르면 게시글이 삭제됨 -> 내일 할 일 사진도 같이 지운다.
+    2017_11_02 이재인 작성일 추가
      */
     private String mlon;
     private String mlat;
@@ -127,6 +131,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         mAuthorView = (TextView) findViewById(R.id.post_author);
         mTitleView = (TextView) findViewById(R.id.post_title);
         mBodyView = (TextView) findViewById(R.id.post_body);
+        mPostTime = (TextView)findViewById(R.id.post_time);
         mCommentField = (EditText) findViewById(R.id.field_comment_text);
         mCommentButton = (Button) findViewById(R.id.button_post_comment);
         mCommentsRecycler = (RecyclerView) findViewById(R.id.recycler_comments);
@@ -170,6 +175,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 Post post = dataSnapshot.getValue(Post.class);
                 /*
                 2017_10_23 이재인 글이 삭제되었을 때 오류 try/catch로 묶어버림
+                2017_11_02 이재인 작성일 추가
                  */
 
                 try{
@@ -178,6 +184,8 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                     mTitleView.setText(post.title);
                     mBodyView.setText(post.body);
                     mAuthor = post.author;
+                    mPostTime.setText("작성일:"+post.postTime);
+
                     Log.d("Tag1", "Author " + mAuthor);
 
                     if(post.lat != null && post.lon!=null) {
@@ -436,11 +444,14 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         public TextView authorView;
         public TextView bodyView;
 
+
         public CommentViewHolder(View itemView) {
             super(itemView);
 
             authorView = (TextView) itemView.findViewById(R.id.comment_author);
             bodyView = (TextView) itemView.findViewById(R.id.comment_body);
+
+
         }
     }
 
@@ -559,6 +570,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
             Comment comment = mComments.get(position);
             holder.authorView.setText(comment.author);
             holder.bodyView.setText(comment.text);
+
         }
 
         @Override

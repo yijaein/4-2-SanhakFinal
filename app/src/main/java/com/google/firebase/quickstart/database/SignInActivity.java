@@ -117,8 +117,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
                         if (task.isSuccessful()) {
                             onAuthSuccess(task.getResult().getUser());
-
                             NotificationSomethings();
+                            sendEmailVerification();
+
 
                         } else {
                             Toast.makeText(SignInActivity.this, "Sign Up Failed",
@@ -130,6 +131,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     }
 
+
     private void onAuthSuccess(FirebaseUser user) {
         String username = usernameFromEmail(user.getEmail());
 
@@ -140,6 +142,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         startActivity(new Intent(SignInActivity.this, MainActivity.class));
         finish();
     }
+
+
 
     private String usernameFromEmail(String email) {
         if (email.contains("@")) {
@@ -176,6 +180,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     }
     // [END basic_write]
 
+
+
+
     @Override
     public void onClick(View v) {
         int i = v.getId();
@@ -183,6 +190,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             signIn();
         } else if (i == R.id.button_sign_up) {
             signUp();
+
         }
     }
 
@@ -200,8 +208,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         builder.setContentTitle("회원가입을 축하드립니다.")
                 .setContentText("가입 첫글을 등록하시겠습니까?")
                 .setTicker("새로 글을 등록하시겠습니까?")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(res, R.mipmap.ic_launcher))
+                .setSmallIcon(R.drawable.ic_find_loc)
+                .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.ic_find_loc))
                 .setContentIntent(contentIntent)
                 .setAutoCancel(true)
                 .setWhen(System.currentTimeMillis())
@@ -224,14 +232,49 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
         if(System.currentTimeMillis() - lastPressed<1500){
             finish();
+            moveTaskToBack(true);
+            android.os.Process.killProcess(android.os.Process.myPid());
         }else{
             Toast.makeText(this,"한번 더 누르면 종료됩니다.",Toast.LENGTH_LONG).show();
             lastPressed= System.currentTimeMillis();
 
 
+
         }
 
     }
+
+    private void sendEmailVerification() {
+        // Disable button
+
+
+        // Send verification email
+        // [START send_email_verification]
+        final FirebaseUser user = mAuth.getCurrentUser();
+        user.sendEmailVerification()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // [START_EXCLUDE]
+                        // Re-enable button
+
+
+                        if (task.isSuccessful()) {
+                            Toast.makeText(SignInActivity.this,
+                                    "Verification email sent to " + user.getEmail(),
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.e(TAG, "sendEmailVerification", task.getException());
+                            Toast.makeText(SignInActivity.this,
+                                    "Failed to send verification email.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        // [END_EXCLUDE]
+                    }
+                });
+        // [END send_email_verification]
+    }
+
 
 
 

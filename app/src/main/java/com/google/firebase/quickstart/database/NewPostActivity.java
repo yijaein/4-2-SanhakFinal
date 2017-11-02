@@ -45,6 +45,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
@@ -53,6 +55,7 @@ import static com.google.firebase.quickstart.database.R.id.lostThingImgView;
 
 /*
 2017 _09_30 이재인 일단 이미지 올리는 것 완료
+2017_11_02 이재인 작성일 추가
  */
 
 public class NewPostActivity extends BaseActivity implements OnMapReadyCallback {
@@ -85,6 +88,7 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
     String StringEmail;
     String photoUri;
     int countPost;
+    String postTime;
 
 
 
@@ -184,6 +188,12 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
 
     showDialog(1);
 
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = df.format(c.getTime());
+
+        postTime = formattedDate;
+
 
     }//oncreate end
 
@@ -251,7 +261,7 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // Write new post
-                            writeNewPost(userId, user.username, title, body,stLat,stLon, photoUri);
+                            writeNewPost(userId, user.username, title, body,stLat,stLon, photoUri,postTime);
 
                         }
 
@@ -290,11 +300,11 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
     }
 
     // [START write_fan_out]
-    private void writeNewPost(String userId, String username, String title, String body,String lat,String lon ,String photoUri) {
+    private void writeNewPost(String userId, String username, String title, String body,String lat,String lon ,String photoUri,String postTime) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
-        Post post = new Post(userId, username, title, body,lat,lon,photoUri);
+        Post post = new Post(userId, username, title, body,lat,lon,photoUri,postTime);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();

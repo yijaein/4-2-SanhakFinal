@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * Created by Jan on 2017-10-31.
  * 2017_10_31 이재인 채팅기능 추가
- * 
+ *
  */
 
 public class ChatFragment extends android.support.v4.app.Fragment {
@@ -78,7 +78,7 @@ public class ChatFragment extends android.support.v4.app.Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mChat = new ArrayList<>();
 
-        mAdapter= new MyAdapter(mChat);
+        mAdapter= new MyAdapter(mChat,email);
         mRecyclerView.setAdapter(mAdapter);
 
         etText = (EditText)v.findViewById(R.id.jungminEditText);
@@ -104,6 +104,7 @@ public class ChatFragment extends android.support.v4.app.Fragment {
                     Hashtable<String, String> chat  = new Hashtable<String, String>();
                     chat.put("email", email);
                     chat.put("text",stText);
+
                     myRef.setValue(chat);
                     etText.setText("");
 

@@ -12,6 +12,7 @@ import java.util.Map;
 /*
     2017_09_28 이재인 좌표값 위도 경도 추가
     2017_09_30 이재인 이미지 저장경로 추가
+    2017_11_02 이재인 작성일 추가
 
  */
 public class Post {
@@ -24,6 +25,7 @@ public class Post {
     public String lon;
     public String lat;
     public String photoUri;
+    public String postTime;
 
     public Map<String, Boolean> stars = new HashMap<>();
 
@@ -33,7 +35,7 @@ public class Post {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Post(String uid, String author, String title, String body, String lon, String lat , String photoUri) {
+    public Post(String uid, String author, String title, String body, String lon, String lat , String photoUri,String postTime) {
         this.uid = uid;
         this.author = author;
         this.title = title;
@@ -41,6 +43,8 @@ public class Post {
         this.lon=lon;
         this.lat= lat;
         this.photoUri = photoUri;
+        this.postTime = postTime;
+
 
 
     }
@@ -58,6 +62,7 @@ public class Post {
         result.put("lon",lon);
         result.put("lat",lat);
         result.put("photoUri",photoUri);
+        result.put("postTime",postTime);
 
 
 

@@ -37,7 +37,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/post_author_layout"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="35dp" />
 
 
     <fragment
@@ -59,6 +59,16 @@
         android:adjustViewBounds="true"
 
         />
+    <!--
+        2017_11_02 이재인 작성일 추가
+    !-->
+    <TextView
+        android:id="@+id/post_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/post_author_layout"
+        android:textStyle="bold"
+        android:layout_alignParentEnd="true"/>
 
 
 

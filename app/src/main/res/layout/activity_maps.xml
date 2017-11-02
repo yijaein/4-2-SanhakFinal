@@ -12,12 +12,13 @@
         android:orientation="horizontal">
 
 
+
+
         <EditText
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:hint="검색할 위치를 입력하세요"
             android:id="@+id/SearchLoc"
-
             />
 
         <Button
@@ -27,11 +28,11 @@
             android:id="@+id/searchBtn"/>
 
 
-
-
     </LinearLayout>
 
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/map"
