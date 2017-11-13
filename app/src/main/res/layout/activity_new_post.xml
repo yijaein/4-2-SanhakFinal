@@ -93,7 +93,12 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="5dp"
         />
-
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="사용법: Location 버튼을 누르시고 자신의 위치 검색을 합니다. 그 다음 사진은 등록(사진크기 500*300 제한) 하시고 글을 작성하시면 됩니다."
+        android:layout_below="@+id/lostThingImgView"/>
 
 
 

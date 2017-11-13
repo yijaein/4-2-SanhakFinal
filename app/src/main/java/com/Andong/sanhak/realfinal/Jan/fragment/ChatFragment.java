@@ -1,6 +1,5 @@
 package com.Andong.sanhak.realfinal.Jan.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.Andong.sanhak.realfinal.Jan.MyAdapter;
+import com.Andong.sanhak.realfinal.Jan.AdapterGroup.MyAdapter;
 import com.Andong.sanhak.realfinal.Jan.models.Chat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.List;
-import com.google.firebase.quickstart.Jan.R;
+
 /**
  * Created by Jan on 2017-10-31.
  * 2017_10_31 이재인 채팅기능 추가

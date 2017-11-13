@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.Andong.sanhak.realfinal.Jan.SignInActivity;
+import com.Andong.sanhak.realfinal.Jan.ActivityGroup.SignInActivity;
 
 /**
  * Created by Jan on 2017-10-20.

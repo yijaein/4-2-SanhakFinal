@@ -24,23 +24,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.Andong.sanhak.realfinal.Jan.MainActivity"
+            android:name="com.Andong.sanhak.realfinal.Jan.ActivityGroup.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
             android:launchMode="singleTask"
              />
-        <activity android:name="com.Andong.sanhak.realfinal.Jan.NewPostActivity"
+        <activity android:name="com.Andong.sanhak.realfinal.Jan.ActivityGroup.NewPostActivity"
             android:theme="@style/AppTheme.NoActionBar"
             />
 
-        <activity android:name="com.Andong.sanhak.realfinal.Jan.SignInActivity"
+        <activity android:name="com.Andong.sanhak.realfinal.Jan.ActivityGroup.SignInActivity"
             android:theme="@style/AppTheme.NoActionBar"
             >
 
         </activity>
 
 
-        <activity android:name="com.Andong.sanhak.realfinal.Jan.PostDetailActivity"
+        <activity android:name="com.Andong.sanhak.realfinal.Jan.ActivityGroup.PostDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"
             ></activity>
 
@@ -62,7 +62,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
-        <activity android:name="com.Andong.sanhak.realfinal.Jan.UserActivity"
+        <activity android:name="com.Andong.sanhak.realfinal.Jan.ActivityGroup.UserActivity"
             android:noHistory="true"
             >
 
@@ -80,6 +80,8 @@
             </intent-filter>
 
         </activity>
+
+        <activity android:name="com.Andong.sanhak.realfinal.Jan.ActivityGroup.DeveloperActivity">  </activity>
 
 
 

@@ -19,7 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
-import com.Andong.sanhak.realfinal.Jan.PostDetailActivity;
+import com.Andong.sanhak.realfinal.Jan.ActivityGroup.PostDetailActivity;
 
 import com.Andong.sanhak.realfinal.Jan.models.Post;
 import com.Andong.sanhak.realfinal.Jan.viewholder.PostViewHolder;

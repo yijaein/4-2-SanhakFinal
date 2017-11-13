@@ -28,6 +28,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="FCM_PREF">com.google.firebase.quickstart.database.fcm_pref</string>
     <string name="FCM_TOKEN">com.google.firebase.quickstart.database.fcm_toen</string>
+    <string name="jungming">개발:이재인,조상현,정성훈,김형범,이수정</string>
 
 
 </resources>

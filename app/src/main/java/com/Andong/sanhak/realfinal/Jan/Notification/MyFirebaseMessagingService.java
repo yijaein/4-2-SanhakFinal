@@ -11,7 +11,7 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.Andong.sanhak.realfinal.Jan.MainActivity;
+import com.Andong.sanhak.realfinal.Jan.ActivityGroup.MainActivity;
 import com.google.firebase.quickstart.Jan.R;
 
 /**

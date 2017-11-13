@@ -18,7 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.Andong.sanhak.realfinal.Jan.NewPostActivity;
+import com.Andong.sanhak.realfinal.Jan.ActivityGroup.NewPostActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

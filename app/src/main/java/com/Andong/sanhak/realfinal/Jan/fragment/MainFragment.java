@@ -41,7 +41,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.Andong.sanhak.realfinal.Jan.MainActivity;
+import com.Andong.sanhak.realfinal.Jan.ActivityGroup.MainActivity;
 import com.Andong.sanhak.realfinal.Jan.Map.MapsActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -116,7 +116,7 @@ public class MainFragment extends android.support.v4.app.Fragment implements OnM
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.myinformation, container, false);
+        View v = inflater.inflate(R.layout.fragment_main, container, false);
         mAuth = FirebaseAuth.getInstance();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
