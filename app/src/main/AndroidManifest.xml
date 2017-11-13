@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.google.firebase.quickstart.database">
+    package="com.google.firebase.quickstart.Jan">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -24,23 +24,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.Andong.sanhak.realfinal.Jan.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
             android:launchMode="singleTask"
              />
-        <activity android:name=".NewPostActivity"
+        <activity android:name="com.Andong.sanhak.realfinal.Jan.NewPostActivity"
             android:theme="@style/AppTheme.NoActionBar"
             />
 
-        <activity android:name=".SignInActivity"
+        <activity android:name="com.Andong.sanhak.realfinal.Jan.SignInActivity"
             android:theme="@style/AppTheme.NoActionBar"
             >
 
         </activity>
 
 
-        <activity android:name=".PostDetailActivity"
+        <activity android:name="com.Andong.sanhak.realfinal.Jan.PostDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"
             ></activity>
 
@@ -49,27 +49,28 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Map.MapsActivity"
+            android:name="com.Andong.sanhak.realfinal.Jan.Map.MapsActivity"
             android:label="@string/title_activity_maps"/>
 
-        <service android:name=".Notification.MyFirebaseMessagingService">
+        <service android:name="com.Andong.sanhak.realfinal.Jan.Notification.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-        <service android:name=".Notification.MyFirebaseInstanceIDService">
+        <service android:name="com.Andong.sanhak.realfinal.Jan.Notification.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
-        <activity android:name=".UserActivity"
+        <activity android:name="com.Andong.sanhak.realfinal.Jan.UserActivity"
             android:noHistory="true"
             >
 
         </activity>
 
-        <activity android:name=".Utils.SplashActivity"
+        <activity android:name="com.Andong.sanhak.realfinal.Jan.Utils.SplashActivity"
             android:theme="@style/SplashTheme"
+            android:windowSoftInputMode="adjustResize"
 
             >
             <intent-filter>
@@ -79,6 +80,9 @@
             </intent-filter>
 
         </activity>
+
+
+
 
     </application>
 

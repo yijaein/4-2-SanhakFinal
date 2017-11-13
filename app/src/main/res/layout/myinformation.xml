@@ -11,28 +11,39 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
+
+    <TableLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="안녕하십니까"
-        android:id="@+id/hello"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        />
+        android:layout_height="wrap_content">
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="안녕하십니까"
+                android:id="@+id/hello"
+
+                />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/hello"
+                android:id="@+id/total_post"
+                />
+
+        </TableRow>
+
+    </TableLayout>
+
+
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/hello"
-        android:id="@+id/total_post"
-        android:layout_marginLeft="70dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/total_post"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:text="현재 잃어버린 물건 위치 전부"
         android:id="@+id/txtinfo"/>
 
@@ -55,31 +66,6 @@
         android:orientation="vertical"
         android:layout_below="@+id/AllMap">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/parbin"
-            />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/parbin"
-            />
-
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/parbin"
-            />
-
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/parbin"
-            />
 
 
 

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.google.firebase.quickstart.database.NewPostActivity">
+    tools:context="com.google.firebase.quickstart.Jan.com.Andong.firebase.quickstart.Jan.NewPostActivity">
 
     <!--
     2017_09_28 이재인 로고 이미지

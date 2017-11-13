@@ -6,7 +6,7 @@ android {
     buildToolsVersion '26.0.2'
 
     defaultConfig {
-        applicationId "com.google.firebase.quickstart.database"
+        applicationId "com.Andong.sanhak.realfinal.Jan"
         minSdkVersion 17
         targetSdkVersion 25
         versionCode 1
@@ -17,7 +17,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
         }
@@ -43,8 +43,9 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:11.2.0'
     compile 'com.firebase:firebase-jobdispatcher:0.6.0'
     compile 'com.google.firebase:firebase-core:11.2.0'
-    compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.android.volley:volley:1.0.0'
+
+
     testCompile 'junit:junit:4.12'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile 'com.android.support.test:runner:0.5'

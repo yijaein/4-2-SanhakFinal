@@ -20,6 +20,9 @@
 -keepattributes *Annotation*
 -keepattributes EnclosingMethod
 -keepattributes InnerClasses
+-dontwarn com.google.firebase.quickstart.Jan
+
+
 
 -keep class com.google.firebase.quickstart.database.viewholder.** {
     *;
