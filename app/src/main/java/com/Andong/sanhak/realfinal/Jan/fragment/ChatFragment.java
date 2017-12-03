@@ -2,6 +2,8 @@ package com.Andong.sanhak.realfinal.Jan.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -55,7 +57,7 @@ public class ChatFragment extends android.support.v4.app.Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_chat, container, false);
+        View v = inflater.inflate(R.layout.fragment_chat, container, false);
 
         database = FirebaseDatabase.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -152,4 +154,18 @@ public class ChatFragment extends android.support.v4.app.Fragment {
 
         return v;
     }
+    private void hideFloatingActionButton(FloatingActionButton fab) {
+        CoordinatorLayout.LayoutParams params =
+                (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+        FloatingActionButton.Behavior behavior =
+                (FloatingActionButton.Behavior) params.getBehavior();
+
+        if (behavior != null) {
+            behavior.setAutoHideEnabled(false);
+        }
+
+        fab.hide();
+    }
+
+
 }

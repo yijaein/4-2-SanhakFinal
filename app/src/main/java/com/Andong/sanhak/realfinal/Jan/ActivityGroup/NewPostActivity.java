@@ -97,7 +97,6 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
         mStorageRef = FirebaseStorage.getInstance().getReference();
-
         // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // [END initialize_database_ref]
@@ -151,11 +150,6 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
 
 
 
-
-
-
-
-
         SharedPreferences pref = getSharedPreferences("GPS", Activity.MODE_PRIVATE);
         lon = pref.getFloat("lon",0);
         lat = pref.getFloat("lat",0);
@@ -172,20 +166,6 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
 
 //        checkPermissionREAD_EXTERNAL_STORAGE(getApplicationContext());
 
-
-
-
-                /*
-        2017_10_20 이재인 뒤로가기 버튼
-         */
-//        ImageButton backBtn = (ImageButton)findViewById(R.id.action_back);
-//        backBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(NewPostActivity.this,MainActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
 
     showDialog(1);
 
@@ -317,28 +297,6 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
     }
     // [END write_fan_out]
 
-
-
-
-
-
-    public void showDialog(final String msg, final Context context,
-                           final String permission) {
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
-        alertBuilder.setCancelable(true);
-        alertBuilder.setTitle("Permission necessary");
-        alertBuilder.setMessage(msg + " permission is necessary");
-        alertBuilder.setPositiveButton(android.R.string.yes,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions((Activity) context,
-                                new String[] { permission },
-                                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                    }
-                });
-        AlertDialog alert = alertBuilder.create();
-        alert.show();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

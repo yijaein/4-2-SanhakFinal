@@ -42,6 +42,9 @@
 
         <activity android:name="com.Andong.sanhak.realfinal.Jan.ActivityGroup.PostDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+
+
             ></activity>
 
         <meta-data
@@ -52,16 +55,19 @@
             android:name="com.Andong.sanhak.realfinal.Jan.Map.MapsActivity"
             android:label="@string/title_activity_maps"/>
 
+
         <service android:name="com.Andong.sanhak.realfinal.Jan.Notification.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+
         <service android:name="com.Andong.sanhak.realfinal.Jan.Notification.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
+
         <activity android:name="com.Andong.sanhak.realfinal.Jan.ActivityGroup.UserActivity"
             android:noHistory="true"
             >
@@ -71,7 +77,6 @@
         <activity android:name="com.Andong.sanhak.realfinal.Jan.Utils.SplashActivity"
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="adjustResize"
-
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

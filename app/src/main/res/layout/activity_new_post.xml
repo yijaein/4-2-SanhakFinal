@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.google.firebase.quickstart.Jan.com.Andong.firebase.quickstart.Jan.NewPostActivity">
+    tools:context="com.Andong.sanhak.realfinal.Jan.ActivityGroup.NewPostActivity">
 
     <!--
     2017_09_28 이재인 로고 이미지
 
-    -->
+   -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:src="@drawable/img_logo"
         android:id="@+id/logoImg"/>
-
-
-
-
 
 
     <EditText
@@ -30,7 +30,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
-        android:hint="Title"
+        android:hint="제목"
         android:maxLines="1" />
 
     <EditText
@@ -42,7 +42,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="5dp"
-        android:hint="Write your post..."
+        android:hint="내용을 입력해주세요."
         android:inputType="textMultiLine"
         android:maxLines="10"
         android:scrollHorizontally="false" />
@@ -110,5 +110,5 @@
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
         android:src="@drawable/ic_navigation_check_24"/>
-
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

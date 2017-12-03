@@ -13,7 +13,7 @@
     <string name="hint_password">password</string>
     <string name="hint_email">email</string>
     <string name="sign_in">Sign In</string>
-    <string name="heading_recent">최신글</string>
+    <string name="heading_recent">나의 글</string>
     <string name="heading_my_posts">모든 글</string>
     <string name="heading_my_top_posts">최고의 글</string>
     <string name="heading_my_information">홈</string>

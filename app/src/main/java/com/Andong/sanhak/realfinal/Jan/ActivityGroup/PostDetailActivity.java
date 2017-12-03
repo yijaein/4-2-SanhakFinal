@@ -77,7 +77,9 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     2017_10_02 이재인 Post.class로 downloadUri를 받아온다.
     2017_10_23 이재인 글을 삭제할 경우 일어나는 nullPointException 오류 try/catch로  수정 글쓴이와 로그인한 아이디와 비교하여 같을 경우 버튼이 생성 버튼을 누르면 게시글이 삭제됨 -> 내일 할 일 사진도 같이 지운다.
     2017_11_02 이재인 작성일 추가
-     */
+    2017_12_03 이재인 만약 이미지를 등록 안했을 경우 이미지뷰를 안보이도록 수정&&onStart 메서드 추가
+
+    */
     private String mlon;
     private String mlat;
     private MapView mapView = null;
@@ -149,7 +151,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         StringUid = user.getUid();
         StringEmail = user.getEmail();
         mPostDetail =(ImageView)findViewById(R.id.postdetailImgView);
-
+        onStart();
 
 
 
@@ -241,6 +243,9 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                                         .setPositiveButton("확인", new DialogInterface.OnClickListener(){
                                             // 확인 버튼 클릭시 설정
                                             public void onClick(DialogInterface dialog, int whichButton){
+                                                /*
+                                                확인 눌렸을 때 글을 삭제
+                                                 */
                                                 final String userId = getUid();
                                                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("/user-posts/"+userId+"/").child(mPostKey);
                                                 final DatabaseReference databaseRaference1 = FirebaseDatabase.getInstance().getReference("posts").child(mPostKey);
@@ -325,8 +330,8 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                         /*
                         2017_10_24 이재인 만약 저장된 이미지가 없다면 기본 이미지로 설정
                          */
-
-                        Picasso.with(PostDetailActivity.this).load(R.drawable.parbin).fit().centerCrop().into(mPostDetail);
+                        mPostDetail.setVisibility(View.GONE);
+                      //  Picasso.with(PostDetailActivity.this).load(R.drawable.parbin).fit().centerCrop().into(mPostDetail);
                 }else{
                     Picasso.with(PostDetailActivity.this).load(stPhoto).fit().centerCrop().into(mPostDetail, new Callback.EmptyCallback() {
                         // Picasso.with(PostDetailActivity.this).load(stPhoto).fit().centerInside().into(mPostDetail, new Callback.EmptyCallback() {
@@ -369,7 +374,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(SEOUL);
             markerOptions.title("잃어버린 물건");
-            markerOptions.snippet("요깅");
+            markerOptions.snippet("여기서 잃어버렸습니다.");
             googleMap.addMarker(markerOptions);
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
             googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));

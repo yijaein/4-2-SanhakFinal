@@ -14,6 +14,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
@@ -129,6 +130,7 @@ public class MainFragment extends android.support.v4.app.Fragment implements OnM
 
 
 
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("posts");
 
@@ -185,6 +187,12 @@ public class MainFragment extends android.support.v4.app.Fragment implements OnM
 
         return v;
     }//END onCreateView
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        enableMyLocation();
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -449,6 +457,8 @@ public class MainFragment extends android.support.v4.app.Fragment implements OnM
         NotificationManager nm = (NotificationManager)getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(1234, builder.build());
     }
+
+
 
 
 
