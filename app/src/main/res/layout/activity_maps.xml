@@ -18,6 +18,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:hint="검색할 위치를 입력하세요"
+            android:layout_weight="0.7"
             android:id="@+id/SearchLoc"
             />
 
@@ -25,6 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="검색"
+            android:layout_weight="0.3"
             android:id="@+id/searchBtn"/>
 
 

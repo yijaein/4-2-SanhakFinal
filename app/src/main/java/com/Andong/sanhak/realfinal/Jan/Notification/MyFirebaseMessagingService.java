@@ -19,12 +19,12 @@ import com.google.firebase.quickstart.Jan.R;
  */
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-    private static final String TAG = "MyFirebaseMsgService";
+    private static final String TAG = "MsgService";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        String title = remoteMessage.getNotification().getTitle();
-        String message = remoteMessage.getNotification().getBody();
+       // String title = remoteMessage.getNotification().getTitle();
+      //  String message = remoteMessage.getNotification().getBody();
         
 
 
@@ -43,7 +43,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Intent intent = new Intent(this,MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0 /* 리퀘스트 코드*/,intent,PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                0 /* 리퀘스트 코드*/,intent,PendingIntent.FLAG_ONE_SHOT);
 
         Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notifiBuilder = new NotificationCompat.Builder(this)

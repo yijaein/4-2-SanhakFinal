@@ -6,6 +6,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ public class ChatFragment extends android.support.v4.app.Fragment {
     String email;
     FirebaseDatabase database;
 
+
     List<Chat> mChat;
     @Nullable
     @Override
@@ -78,6 +80,7 @@ public class ChatFragment extends android.support.v4.app.Fragment {
         mChat = new ArrayList<>();
 
         mAdapter= new MyAdapter(mChat,email);
+
         mRecyclerView.setAdapter(mAdapter);
 
         etText = (EditText)v.findViewById(R.id.jungminEditText);
@@ -99,11 +102,13 @@ public class ChatFragment extends android.support.v4.app.Fragment {
                     String formattedDate = df.format(c.getTime());
 
 
+
                     DatabaseReference myRef = database.getReference("chats").child(formattedDate);
 
                     Hashtable<String, String> chat  = new Hashtable<String, String>();
                     chat.put("email", email);
                     chat.put("text",stText);
+
 
                     myRef.setValue(chat);
                     etText.setText("");
@@ -154,18 +159,7 @@ public class ChatFragment extends android.support.v4.app.Fragment {
 
         return v;
     }
-    private void hideFloatingActionButton(FloatingActionButton fab) {
-        CoordinatorLayout.LayoutParams params =
-                (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
-        FloatingActionButton.Behavior behavior =
-                (FloatingActionButton.Behavior) params.getBehavior();
 
-        if (behavior != null) {
-            behavior.setAutoHideEnabled(false);
-        }
-
-        fab.hide();
-    }
 
 
 }

@@ -19,7 +19,7 @@ import com.google.firebase.quickstart.Jan.R;
  */
 
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
-    private static final String TAG = "MyFirebaseInsIDService";
+    private static final String TAG = "InsIDService";
 
     @Override
     public void onTokenRefresh() {

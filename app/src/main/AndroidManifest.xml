@@ -14,6 +14,7 @@
     <!--
             2017_10_18 이재인 커스턴 타이틀바 생성, NewPostActivity,PostDetatilAcitivity NotitleBar 로 만듬
             2017_10_20 이재인 스플레쉬 화면 생성 현재 intent-filter -> splash
+            2018_04_07 이재인 NewpostActivity가 중복 생성되는것 확인
 
     !-->
 
@@ -31,6 +32,7 @@
              />
         <activity android:name="com.Andong.sanhak.realfinal.Jan.ActivityGroup.NewPostActivity"
             android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
             />
 
         <activity android:name="com.Andong.sanhak.realfinal.Jan.ActivityGroup.SignInActivity"
@@ -43,8 +45,6 @@
         <activity android:name="com.Andong.sanhak.realfinal.Jan.ActivityGroup.PostDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan|stateHidden"
-
-
             ></activity>
 
         <meta-data

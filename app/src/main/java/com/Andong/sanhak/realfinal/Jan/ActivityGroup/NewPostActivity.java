@@ -56,6 +56,7 @@ import java.util.Map;
 /*
 2017 _09_30 이재인 일단 이미지 올리는 것 완료
 2017_11_02 이재인 작성일 추가
+2018_04_07 이재인 디비 불러오는 부분을 onResume으로 변경
  */
 
 public class NewPostActivity extends BaseActivity implements OnMapReadyCallback {
@@ -150,6 +151,15 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
 
 
 
+
+
+    }//oncreate end
+
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
         SharedPreferences pref = getSharedPreferences("GPS", Activity.MODE_PRIVATE);
         lon = pref.getFloat("lon",0);
         lat = pref.getFloat("lat",0);
@@ -167,7 +177,7 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
 //        checkPermissionREAD_EXTERNAL_STORAGE(getApplicationContext());
 
 
-    showDialog(1);
+        showDialog(1);
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -176,27 +186,23 @@ public class NewPostActivity extends BaseActivity implements OnMapReadyCallback 
         postTime = formattedDate;
 
 
-    }//oncreate end
-
-
+    }
 
     /*
-        구글맵
-     */
+            구글맵
+         */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
-
 
         LatLng SEOUL = new LatLng(lat, lon);
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(SEOUL);
-        markerOptions.title("서울");
-        markerOptions.snippet("수도");
+        markerOptions.title("잃어버린 물건");
+        markerOptions.snippet("물건");
         googleMap.addMarker(markerOptions);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-
+      
 
 
 

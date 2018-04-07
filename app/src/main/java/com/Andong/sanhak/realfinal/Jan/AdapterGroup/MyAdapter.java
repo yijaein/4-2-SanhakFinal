@@ -1,6 +1,7 @@
 package com.Andong.sanhak.realfinal.Jan.AdapterGroup;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +20,9 @@ import java.util.List;
  */
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-    private String[] mDataset;
     List<Chat> mChat;
     String stEmail;
+
 
 
     // Provide a reference to the views for each data item
@@ -43,6 +44,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public MyAdapter(List<Chat> mChat,String email) {
         this.mChat = mChat;
         this.stEmail=email;
+
+
     }
 /*
         2017_11_01 이재인 채팅기능 추가
@@ -95,6 +98,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
 
         holder.mTextView.setText(mChat.get(position).getEmail()+"\n"+mChat.get(position).getText());
+
 
 
 
